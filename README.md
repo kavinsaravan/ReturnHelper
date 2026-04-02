@@ -285,39 +285,7 @@ const allReturns = await storage.getAllReturns();
 - `deleteReturn(returnId: string): Promise<void>`
 - `getReturnsByStatus(status: string): Promise<ReturnRequest[]>`
 
-## Roadmap
-
-### Phase 1 (Current)
-- [x] Basic UI/UX
-- [x] Email parsing
-- [x] Simulated return processing
-- [x] Local storage
-- [x] Progress tracking
-
-### Phase 2
-- [ ] Backend API integration
-- [ ] User authentication
-- [ ] Real web automation
-- [ ] Cloud storage
-- [ ] Push notifications
-
-### Phase 3
-- [ ] AI-powered email parsing
-- [ ] Support for 100+ retailers
-- [ ] Receipt OCR
-- [ ] Multi-language support
-- [ ] Analytics dashboard
-
-### Phase 4
-- [ ] Chrome extension
-- [ ] Web application
-- [ ] Subscription plans
-- [ ] Business/Enterprise features
-- [ ] White-label solution
-
 ## Contributing
-
-We welcome contributions! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
@@ -325,27 +293,5 @@ We welcome contributions! Please follow these steps:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
 
-## Support
-
-For questions or issues:
-- Open an issue on GitHub
-- Email: support@returnsrunner.com
-- Discord: [Join our community]
-
-## Acknowledgments
-
-- React Native team for the amazing framework
-- All contributors and supporters
-- Beta testers who provided valuable feedback
-
-## Disclaimer
-
-This is a prototype application for demonstration purposes. Automating website interactions may violate some retailers' Terms of Service. Always ensure you have permission to automate interactions with third-party websites. Use at your own risk.
-
----
-
-Built with ❤️ by the ReturnsRunner team
