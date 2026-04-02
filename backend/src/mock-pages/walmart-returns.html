@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Walmart Returns - Mock Portal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Bogle", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: #f2f8fd;
+      padding: 20px;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    }
+    .header {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid #0071DC;
+    }
+    .logo {
+      color: #0071DC;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    h1 {
+      color: #2E2F32;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #74767C;
+      font-size: 16px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #2E2F32;
+      font-size: 14px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #BFC0C2;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #0071DC;
+      box-shadow: 0 0 0 1px #0071DC;
+    }
+    button {
+      background: #0071DC;
+      color: white;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 24px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #004F9A;
+    }
+    button.secondary {
+      background: white;
+      color: #0071DC;
+      border: 1px solid #0071DC;
+    }
+    button.secondary:hover {
+      background: #E6F1FC;
+    }
+    .hidden {
+      display: none;
+    }
+    .order-summary {
+      background: #F0F6FE;
+      padding: 24px;
+      border-radius: 8px;
+      margin: 24px 0;
+      border-left: 4px solid #0071DC;
+    }
+    .item-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #E0E0E0;
+      margin: 15px 0;
+    }
+    .radio-label {
+      display: flex;
+      align-items: center;
+      padding: 16px;
+      border: 2px solid #E0E0E0;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      cursor: pointer;
+    }
+    .radio-label:hover {
+      border-color: #0071DC;
+    }
+    .radio-label input[type="radio"] {
+      width: auto;
+      margin-right: 12px;
+    }
+    .success-banner {
+      background: #EBF8ED;
+      color: #1E7B34;
+      padding: 24px;
+      border-radius: 8px;
+      margin: 24px 0;
+      border-left: 4px solid #46B65F;
+    }
+    .info-box {
+      background: #FFF9E6;
+      padding: 16px;
+      border-radius: 6px;
+      margin: 16px 0;
+      border-left: 3px solid #FFC220;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">Walmart</div>
+      <h1>Start a Return or Replacement</h1>
+      <p class="subtitle">We'll help you return or replace your item</p>
+    </div>
+
+    <!-- Guest Return Button -->
+    <div id="step-guest-start">
+      <div class="info-box">
+        <strong>Returning without an account?</strong>
+        <p>You can still return items purchased as a guest using your order number and email.</p>
+      </div>
+
+      <div class="button-group">
+        <button id="guest-return-btn">Continue as Guest</button>
+        <button class="secondary">Sign In</button>
+      </div>
+    </div>
+
+    <!-- Step 1: Order Lookup -->
+    <div id="step-lookup" class="hidden">
+      <h2 style="margin-bottom: 20px;">Find Your Order</h2>
+
+      <div class="form-group">
+        <label for="order-number-input">Order Number</label>
+        <input type="text" id="order-number-input" placeholder="Enter order number">
+      </div>
+
+      <div class="form-group">
+        <label for="email-input">Email Address</label>
+        <input type="email" id="email-input" placeholder="email@example.com">
+      </div>
+
+      <button id="find-order-button">Find Order</button>
+    </div>
+
+    <!-- Step 2: Order Found -->
+    <div id="step-order-found" class="hidden">
+      <div class="order-summary">
+        <h3>Order Found</h3>
+        <p><strong>Order #:</strong> <span id="display-order-num"></span></p>
+        <p style="margin-top: 8px;"><strong>Email:</strong> <span id="display-email"></span></p>
+      </div>
+
+      <div class="item-card">
+        <div style="display: flex; align-items: center; gap: 15px;">
+          <input type="checkbox" class="item-return-checkbox">
+          <div>
+            <strong>Portable Phone Charger</strong>
+            <p style="color: #74767C; margin-top: 5px;">Qty: 1 | $24.99</p>
+          </div>
+        </div>
+      </div>
+
+      <button id="continue-to-reason-btn" style="margin-top: 20px;">Continue</button>
+    </div>
+
+    <!-- Step 3: Return Reason -->
+    <div id="step-reason" class="hidden">
+      <h2 style="margin-bottom: 20px;">Tell us why you're returning this</h2>
+
+      <div class="form-group">
+        <label class="radio-label">
+          <input type="radio" name="return-reason" value="unwanted">
+          <span>No longer needed</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="return-reason" value="defective">
+          <span>Item is defective or damaged</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="return-reason" value="wrong-item">
+          <span>Wrong item received</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="return-reason" value="not-as-described">
+          <span>Item not as described</span>
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label for="return-details">Additional Details (Optional)</label>
+        <textarea id="return-details" rows="3" placeholder="Tell us more about your return..."></textarea>
+      </div>
+
+      <button id="continue-to-refund-btn">Continue</button>
+    </div>
+
+    <!-- Step 4: Refund & Shipping -->
+    <div id="step-refund-shipping" class="hidden">
+      <h2 style="margin-bottom: 20px;">How would you like your refund?</h2>
+
+      <div class="form-group">
+        <label class="radio-label">
+          <input type="radio" name="refund-method" id="refund-original-payment">
+          <span>Original payment method (5-7 business days)</span>
+        </label>
+        <label class="radio-label">
+          <input type="radio" name="refund-method" id="refund-store-credit">
+          <span>Walmart eGift Card (Instant)</span>
+        </label>
+      </div>
+
+      <h3 style="margin: 30px 0 15px;">Choose return method</h3>
+
+      <div class="form-group">
+        <label class="radio-label" id="shipping-fedex">
+          <input type="radio" name="shipping-method" value="fedex">
+          <span>📦 Ship via FedEx (Free - Print label)</span>
+        </label>
+        <label class="radio-label" id="shipping-store">
+          <input type="radio" name="shipping-method" value="store">
+          <span>🏪 Return to Walmart Store</span>
+        </label>
+      </div>
+
+      <button id="submit-return-button" style="margin-top: 20px;">Submit Return</button>
+    </div>
+
+    <!-- Step 5: Confirmation -->
+    <div id="step-confirmation" class="hidden">
+      <div class="success-banner">
+        <h2>✓ Return Submitted Successfully</h2>
+        <div style="margin-top: 15px;">
+          <p><strong>Return Confirmation:</strong></p>
+          <p class="return-confirmation-number" style="font-size: 24px; font-weight: 700; margin: 10px 0;"></p>
+        </div>
+        <div style="margin-top: 15px;">
+          <p><strong>Tracking ID:</strong></p>
+          <p class="tracking-id" style="font-size: 18px; margin: 5px 0;"></p>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <strong>Next Steps:</strong>
+        <ol style="margin-left: 20px; margin-top: 10px;">
+          <li>Download and print your shipping label</li>
+          <li>Package your item securely</li>
+          <li>Drop off at any FedEx location</li>
+          <li>Your refund will be processed within 5-7 days after we receive the item</li>
+        </ol>
+      </div>
+
+      <button id="download-label-btn" style="margin-top: 20px;">Download Shipping Label</button>
+    </div>
+  </div>
+
+  <script>
+    // Guest start
+    document.getElementById('guest-return-btn').addEventListener('click', () => {
+      document.getElementById('step-guest-start').classList.add('hidden');
+      document.getElementById('step-lookup').classList.remove('hidden');
+    });
+
+    // Find order
+    document.getElementById('find-order-button').addEventListener('click', () => {
+      const orderNum = document.getElementById('order-number-input').value;
+      const email = document.getElementById('email-input').value;
+
+      if (orderNum && email) {
+        document.getElementById('display-order-num').textContent = orderNum;
+        document.getElementById('display-email').textContent = email;
+
+        document.getElementById('step-lookup').classList.add('hidden');
+        document.getElementById('step-order-found').classList.remove('hidden');
+      }
+    });
+
+    // Continue to reason
+    document.getElementById('continue-to-reason-btn').addEventListener('click', () => {
+      const checked = document.querySelector('.item-return-checkbox:checked');
+      if (checked) {
+        document.getElementById('step-order-found').classList.add('hidden');
+        document.getElementById('step-reason').classList.remove('hidden');
+      }
+    });
+
+    // Continue to refund
+    document.getElementById('continue-to-refund-btn').addEventListener('click', () => {
+      const selectedReason = document.querySelector('input[name="return-reason"]:checked');
+      if (selectedReason) {
+        document.getElementById('step-reason').classList.add('hidden');
+        document.getElementById('step-refund-shipping').classList.remove('hidden');
+      } else {
+        alert('Please select a return reason');
+      }
+    });
+
+    // Submit return
+    document.getElementById('submit-return-button').addEventListener('click', () => {
+      const orderNum = document.getElementById('order-number-input').value;
+      const refundMethod = document.querySelector('input[name="refund-method"]:checked');
+      const shippingMethod = document.querySelector('input[name="shipping-method"]:checked');
+
+      if (refundMethod && shippingMethod) {
+        const confirmationCode = 'WMT' + Date.now();
+        const trackingId = 'FDX' + Math.random().toString(36).substring(2, 15).toUpperCase();
+
+        document.querySelector('.return-confirmation-number').textContent = confirmationCode;
+        document.querySelector('.tracking-id').textContent = trackingId;
+
+        const labelBtn = document.getElementById('download-label-btn');
+        labelBtn.setAttribute('data-url', 'http://localhost:5000/mock/labels/walmart-' + orderNum + '.pdf');
+
+        document.getElementById('step-refund-shipping').classList.add('hidden');
+        document.getElementById('step-confirmation').classList.remove('hidden');
+      } else {
+        alert('Please select both refund and shipping methods');
+      }
+    });
+
+    // Download label
+    document.getElementById('download-label-btn').addEventListener('click', () => {
+      const url = document.getElementById('download-label-btn').getAttribute('data-url');
+      if (url) {
+        window.open(url, '_blank');
+      }
+    });
+  </script>
+</body>
+</html>

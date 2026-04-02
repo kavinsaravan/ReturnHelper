@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Amazon Returns - Mock Portal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Amazon Ember", Arial, sans-serif;
+      background: #eaeded;
+      padding: 20px;
+    }
+    .container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #0F1111;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #0F1111;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #D5D9D9;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #e77600;
+      box-shadow: 0 0 3px 2px rgba(228, 121, 17, 0.5);
+    }
+    button {
+      background: #FFD814;
+      border: 1px solid #FCD200;
+      color: #0F1111;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #F7CA00;
+    }
+    .hidden {
+      display: none;
+    }
+    .order-details {
+      background: #F7F8FA;
+      padding: 20px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .success {
+      background: #D4EDDA;
+      color: #155724;
+      padding: 15px;
+      border-radius: 4px;
+      margin: 20px 0;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: 700;
+      color: #131921;
+      margin-bottom: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">amazon</div>
+    <h1>Returns Center</h1>
+
+    <!-- Step 1: Find Order -->
+    <div id="step-find-order">
+      <div class="form-group">
+        <label for="order-number">Order Number</label>
+        <input type="text" id="order-number" placeholder="e.g., 123-4567890-1234567">
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email Address</label>
+        <input type="email" id="email" placeholder="name@example.com">
+      </div>
+
+      <button id="find-order-btn">Find Order</button>
+    </div>
+
+    <!-- Step 2: Order Found -->
+    <div id="order-details" class="hidden">
+      <div class="order-details">
+        <h3>Order Found</h3>
+        <p><strong>Order #:</strong> <span id="display-order-number"></span></p>
+        <p><strong>Email:</strong> <span id="display-email"></span></p>
+        <p><strong>Item:</strong> Wireless Headphones</p>
+        <p><strong>Price:</strong> $89.99</p>
+      </div>
+      <button id="return-item-btn">Return This Item</button>
+    </div>
+
+    <!-- Step 3: Return Form -->
+    <div id="return-form" class="hidden">
+      <h2>Why are you returning this?</h2>
+
+      <div class="form-group">
+        <label for="return-reason">Reason for Return</label>
+        <select id="return-reason">
+          <option value="">Select a reason</option>
+          <option value="no-longer-needed">No longer needed</option>
+          <option value="defective">Defective or doesn't work</option>
+          <option value="wrong-item">Wrong item was sent</option>
+          <option value="not-as-described">Not as described</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="comments">Additional Comments (Optional)</label>
+        <textarea id="comments" rows="4" placeholder="Tell us more..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="shipping-method">Return Shipping Method</label>
+        <select id="shipping-method">
+          <option value="ups-dropoff">UPS Drop-off (Free)</option>
+          <option value="ups-pickup">UPS Pickup ($5.00)</option>
+          <option value="amazon-locker">Amazon Locker (Free)</option>
+        </select>
+      </div>
+
+      <button id="submit-return-btn">Submit Return Request</button>
+    </div>
+
+    <!-- Step 4: Confirmation -->
+    <div id="confirmation" class="hidden">
+      <div class="success">
+        <h2>✓ Return Request Submitted</h2>
+        <p><strong>Confirmation Number:</strong> <span id="confirmation-number"></span></p>
+        <p><strong>Tracking Number:</strong> <span id="tracking-number"></span></p>
+        <p><strong>Label:</strong> <a href="#" id="label-download-link">Download Shipping Label</a></p>
+      </div>
+      <p>Your return has been approved. Print your shipping label and drop off the package at any UPS location.</p>
+    </div>
+  </div>
+
+  <script>
+    // Step 1: Find Order
+    document.getElementById('find-order-btn').addEventListener('click', () => {
+      const orderNumber = document.getElementById('order-number').value;
+      const email = document.getElementById('email').value;
+
+      if (orderNumber && email) {
+        document.getElementById('display-order-number').textContent = orderNumber;
+        document.getElementById('display-email').textContent = email;
+
+        document.getElementById('step-find-order').classList.add('hidden');
+        document.getElementById('order-details').classList.remove('hidden');
+      }
+    });
+
+    // Step 2: Start Return
+    document.getElementById('return-item-btn').addEventListener('click', () => {
+      document.getElementById('order-details').classList.add('hidden');
+      document.getElementById('return-form').classList.remove('hidden');
+    });
+
+    // Step 3: Submit Return
+    document.getElementById('submit-return-btn').addEventListener('click', () => {
+      const orderNumber = document.getElementById('order-number').value;
+      const reason = document.getElementById('return-reason').value;
+
+      if (reason) {
+        const confirmationNum = 'AMZ-' + orderNumber + '-' + Date.now();
+        const trackingNum = '1Z999AA10123456784';
+
+        document.getElementById('confirmation-number').textContent = confirmationNum;
+        document.getElementById('tracking-number').textContent = trackingNum;
+        document.getElementById('label-download-link').href =
+          'http://localhost:5000/mock/labels/amazon-' + orderNumber + '.pdf';
+
+        document.getElementById('return-form').classList.add('hidden');
+        document.getElementById('confirmation').classList.remove('hidden');
+      } else {
+        alert('Please select a return reason');
+      }
+    });
+  </script>
+</body>
+</html>

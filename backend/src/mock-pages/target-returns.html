@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Target Returns - Mock Portal</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      border-radius: 4px;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .logo {
+      width: 50px;
+      height: 50px;
+      background: #CC0000;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      font-weight: 700;
+      margin-right: 15px;
+    }
+    h1 {
+      color: #333;
+      font-size: 24px;
+      font-weight: 400;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: #333;
+      font-size: 14px;
+    }
+    input, select {
+      width: 100%;
+      padding: 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    input:focus, select:focus {
+      outline: none;
+      border-color: #CC0000;
+    }
+    button {
+      background: #CC0000;
+      color: white;
+      padding: 14px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #AA0000;
+    }
+    .hidden {
+      display: none;
+    }
+    .order-item {
+      background: #f9f9f9;
+      padding: 20px;
+      border-radius: 4px;
+      margin: 20px 0;
+      border-left: 4px solid #CC0000;
+    }
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .dropdown-option {
+      padding: 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    .dropdown-option:hover {
+      background: #f5f5f5;
+    }
+    .confirmation-box {
+      background: #E8F5E9;
+      color: #2E7D32;
+      padding: 24px;
+      border-radius: 4px;
+      margin: 20px 0;
+      border-left: 4px solid #4CAF50;
+    }
+    .confirmation-code {
+      font-size: 24px;
+      font-weight: 700;
+      margin: 10px 0;
+    }
+    .barcode {
+      text-align: center;
+      margin: 20px 0;
+      padding: 20px;
+      background: white;
+      border: 2px dashed #ccc;
+    }
+    .radio-group {
+      margin: 15px 0;
+    }
+    .radio-option {
+      padding: 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .radio-option:hover {
+      border-color: #CC0000;
+    }
+    .radio-option.selected {
+      border-color: #CC0000;
+      background: #FFF5F5;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">◎</div>
+      <h1>Returns & Exchanges</h1>
+    </div>
+
+    <!-- Step 1: Order Lookup -->
+    <div id="step-lookup">
+      <h2 style="margin-bottom: 20px;">Look up your order</h2>
+
+      <div class="form-group">
+        <label for="order-id">Order Number</label>
+        <input type="text" id="order-id" placeholder="Enter your order number">
+      </div>
+
+      <div class="form-group">
+        <label for="billing-email">Billing Email</label>
+        <input type="email" id="billing-email" placeholder="email@example.com">
+      </div>
+
+      <button id="lookup-order-btn">Find My Order</button>
+    </div>
+
+    <!-- Step 2: Select Items -->
+    <div id="step-select-items" class="hidden">
+      <h2 style="margin-bottom: 20px;">Select items to return</h2>
+
+      <div class="order-item">
+        <div class="checkbox-group">
+          <input type="checkbox" id="item-1" class="return-item-checkbox">
+          <div>
+            <strong>Bluetooth Speaker</strong>
+            <p style="color: #666; margin-top: 5px;">Qty: 1 | Price: $49.99</p>
+          </div>
+        </div>
+      </div>
+
+      <button id="continue-return-btn">Continue Return</button>
+    </div>
+
+    <!-- Step 3: Return Reason -->
+    <div id="step-reason" class="hidden">
+      <h2 style="margin-bottom: 20px;">Why are you returning this item?</h2>
+
+      <div class="form-group">
+        <select id="reason-dropdown" style="display: none;">
+          <option value="">Select a reason</option>
+          <option value="changed-mind" data-reason="changed-mind">Changed my mind</option>
+          <option value="defective" data-reason="defective">Defective or damaged</option>
+          <option value="wrong-item" data-reason="wrong-item">Received wrong item</option>
+        </select>
+
+        <div id="reason-dropdown" style="border: 1px solid #ccc; border-radius: 4px;">
+          <div class="dropdown-option" data-reason="changed-mind">Changed my mind</div>
+          <div class="dropdown-option" data-reason="defective">Defective or damaged</div>
+          <div class="dropdown-option" data-reason="wrong-item">Received wrong item</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 30px;">
+        <h3 style="margin-bottom: 15px;">How would you like to return?</h3>
+        <div class="radio-group">
+          <div class="radio-option" id="return-method-mail">
+            <strong>📦 Mail Return</strong>
+            <p style="color: #666; margin-top: 5px;">Print label and drop off at FedEx</p>
+          </div>
+          <div class="radio-option" id="return-method-store">
+            <strong>🏪 In-Store Return</strong>
+            <p style="color: #666; margin-top: 5px;">Bring item to any Target store</p>
+          </div>
+        </div>
+      </div>
+
+      <button id="submit-return-request-btn" style="margin-top: 20px;">Submit Return</button>
+    </div>
+
+    <!-- Step 4: Confirmation -->
+    <div id="step-confirmation" class="hidden">
+      <div class="confirmation-box">
+        <h2>✓ Return Approved</h2>
+        <div class="confirmation-code"></div>
+        <p>Your return has been processed successfully</p>
+      </div>
+
+      <div class="barcode">
+        <strong class="barcode-number"></strong>
+        <p style="margin-top: 10px; color: #666;">Show this at any Target store or include with mail return</p>
+      </div>
+
+      <div style="text-align: center; margin-top: 20px;">
+        <a href="#" id="print-label-link" style="color: #CC0000; font-weight: 600;">Download Return Label</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedReason = null;
+    let selectedMethod = null;
+
+    // Step 1: Lookup Order
+    document.getElementById('lookup-order-btn').addEventListener('click', () => {
+      const orderId = document.getElementById('order-id').value;
+      const email = document.getElementById('billing-email').value;
+
+      if (orderId && email) {
+        document.getElementById('step-lookup').classList.add('hidden');
+        document.getElementById('step-select-items').classList.remove('hidden');
+      }
+    });
+
+    // Step 2: Continue to reason
+    document.getElementById('continue-return-btn').addEventListener('click', () => {
+      const checked = document.querySelector('.return-item-checkbox:checked');
+      if (checked) {
+        document.getElementById('step-select-items').classList.add('hidden');
+        document.getElementById('step-reason').classList.remove('hidden');
+      }
+    });
+
+    // Select reason
+    document.querySelectorAll('.dropdown-option').forEach(option => {
+      option.addEventListener('click', () => {
+        selectedReason = option.getAttribute('data-reason');
+        document.querySelectorAll('.dropdown-option').forEach(o => {
+          o.style.background = '';
+          o.style.fontWeight = '';
+        });
+        option.style.background = '#FFF5F5';
+        option.style.fontWeight = '600';
+      });
+    });
+
+    // Select return method
+    document.getElementById('return-method-mail').addEventListener('click', () => {
+      selectedMethod = 'mail';
+      document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+      document.getElementById('return-method-mail').classList.add('selected');
+    });
+
+    document.getElementById('return-method-store').addEventListener('click', () => {
+      selectedMethod = 'store';
+      document.querySelectorAll('.radio-option').forEach(o => o.classList.remove('selected'));
+      document.getElementById('return-method-store').classList.add('selected');
+    });
+
+    // Submit return
+    document.getElementById('submit-return-request-btn').addEventListener('click', () => {
+      const orderId = document.getElementById('order-id').value;
+
+      if (selectedReason && selectedMethod) {
+        const confirmationCode = 'TGT-' + orderId + '-' + Date.now();
+        const barcodeNum = 'TGT' + Math.random().toString(36).substring(2, 15).toUpperCase();
+
+        document.querySelector('.confirmation-code').textContent = confirmationCode;
+        document.querySelector('.barcode-number').textContent = barcodeNum;
+        document.getElementById('print-label-link').href =
+          'http://localhost:5000/mock/labels/target-' + orderId + '.pdf';
+
+        document.getElementById('step-reason').classList.add('hidden');
+        document.getElementById('step-confirmation').classList.remove('hidden');
+      } else {
+        alert('Please select a reason and return method');
+      }
+    });
+  </script>
+</body>
+</html>
