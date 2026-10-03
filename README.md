@@ -145,8 +145,6 @@ npm run android
 - H&M
 - ASOS
 
-### Generic Support
-For retailers not in the list above, the app uses generic automation that attempts to intelligently navigate the return process.
 
 ## Backend Integration (Future)
 
@@ -244,54 +242,6 @@ xcodebuild -workspace ReturnsRunner.xcworkspace -scheme ReturnsRunner -configura
 cd android
 ./gradlew assembleRelease
 ```
-
-## API Documentation
-
-### EmailParser
-
-```typescript
-const parser = new EmailParser();
-const orderDetails = await parser.parseEmail(emailContent);
-```
-
-**Methods**:
-- `parseEmail(content: string): Promise<OrderDetails | null>` - Parse email to extract order info
-
-### ReturnsAgent
-
-```typescript
-const agent = new ReturnsAgent();
-const returnRequest = await agent.initiateReturn({
-  orderDetails,
-  instruction: "return this"
-});
-```
-
-**Methods**:
-- `initiateReturn(request: ReturnInitiationRequest): Promise<ReturnRequest>` - Start a new return
-
-### ReturnsStorage
-
-```typescript
-const storage = new ReturnsStorage();
-await storage.saveReturn(returnRequest);
-const allReturns = await storage.getAllReturns();
-```
-
-**Methods**:
-- `saveReturn(returnRequest: ReturnRequest): Promise<void>`
-- `getReturn(returnId: string): Promise<ReturnRequest | null>`
-- `getAllReturns(): Promise<ReturnRequest[]>`
-- `deleteReturn(returnId: string): Promise<void>`
-- `getReturnsByStatus(status: string): Promise<ReturnRequest[]>`
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 
 
